@@ -1,7 +1,7 @@
 func twoSum(nums []int, target int) []int {
     answer := []int{}
     for i := 0; i < len(nums); i++{
-        for j := 0; j < len(nums); j++{
+        for j := i+1; j < len(nums); j++{
             if j == i {
                 continue
             }
