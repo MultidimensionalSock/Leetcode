@@ -1,4 +1,3 @@
-/* Write your T-SQL query statement below */
 select 
     l.book_id, 
     l.title, 
