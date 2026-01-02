@@ -1,0 +1,167 @@
+1. Two Sum - Golang
+func twoSum(nums []int, target int) []int { 
+    for i := 0; i < len(nums); i++ {
+        for j := 0; j < len(nums); j++ {
+            if i == j{
+                continue
+            }
+            if nums[i] + nums[j] == target {
+                r := []int{i, j}
+                return r
+            }
+        }
+    }
+    return []int{0, 0}
+}
+
+177. Nth Highest Salary - SQL 
+CREATE FUNCTION getNthHighestSalary(@N INT) RETURNS INT AS
+BEGIN
+    RETURN (
+        select case when (@N <= 0) then null
+        else
+        (select top 1 salary from
+        (select salary, lag(salary, @n - 1, null) over (order by salary desc) as lagid
+        from (select distinct salary from Employee) as Employee) as s where s.lagid is not null)
+        end as salary
+    );
+END
+
+184. Department Highest Salary - SQL
+select d.name as Department, e.Name as Employee, e.salary from employee as e
+join (select id, name, max(salary) over (partition by departmentid) as maxi
+from employee) as e2
+
+on e.id = e2.id
+join Department as d on e.departmentId  = d.id
+and e.salary = e2.maxi
+
+585. Investments in 2016 - sql 
+select round(sum(tiv_2016),2) as tiv_2016 from Insurance as i
+join (
+select lat, lon from Insurance
+group by lat, lon
+having count(*) <= 1) as d
+on i.lat= d.lat and i.lon = d.lon
+where tiv_2015 in 
+(
+    select tiv_2015 from Insurance group by tiv_2015 having count(*) > 1
+)
+
+602. Friend Requests II: Who Has the Most Friends - sql 
+select top 1
+case when r.id is null then a.id 
+else r.id 
+end as id, isnull(r.count1,0) + isnull(a.count2,0) as num from
+(select requester_id as id, count(*) as count1
+from RequestAccepted
+group by requester_id) as r
+full outer join
+(select accepter_id as id, count(*) as count2
+from RequestAccepted
+group by accepter_id) as a
+on a.id = r.id
+order by num desc
+
+1174. Immediate Food Delivery II - SQL 
+select round(cast(count(*)as float)/(select count(distinct customer_id) from Delivery) * 100,2)
+as immediate_percentage
+from Delivery as d join 
+(select customer_id,  min(order_date) as order_date from Delivery 
+group by customer_id)
+as f on d.order_date = f.order_date and d.customer_id = f.customer_id
+where  d.order_date = d.customer_pref_delivery_date 
+
+1204. Last Person to Fit in the Bus - sql 
+select top 1 o.person_name from (
+select person_name, turn, sum(weight) over (order by turn) as w
+from Queue) as o
+where o.w <= 1000
+order by o.turn desc
+
+1731. The Number of Employees Which Report to Each Employee - sql 
+select e1.employee_id, e1.name, e2.reports_count, e2.average_age from Employees as e1
+join (
+    select reports_to, round(avg(cast(age as float)),0) as average_age, count(*) as reports_count from Employees
+    group by reports_to
+) as e2
+on e1.employee_id = e2.reports_to
+
+1873. Calculate Special Bonus - sql 
+select employee_id,
+case 
+    when name like 'm%' then 0
+    when name  not like 'm%' and employee_id % 2 = 0 then 0
+    else salary 
+    end as bonus 
+from Employees
+order by employee_id
+
+2236. Root Equals Sum of Children - go
+func checkTree(root *TreeNode) bool {
+    sum := root.Left.Val + root.Right.Val
+    if sum == root.Val{
+        return true
+    }
+    return false
+}
+
+3570. Find Books with No Available Copies - sql 
+select l.book_id, l.title, l.author, l.genre, l.publication_year, b.currently_borrowed as current_borrowers 
+from library_books as l 
+join (
+select book_id, count(*) as currently_borrowed from borrowing_records
+where return_date is null
+group by book_id 
+) 
+as b
+on b.book_id = l.book_id
+where l.total_copies = b.currently_borrowed
+order by current_borrowers desc, l.title 
+
+961. N-Repeated Element in Size 2N Array - go
+func repeatedNTimes(nums []int) int {
+    n := len(nums) / 2
+    freq := make(map[int]int) 
+    for _ , num :=  range nums {
+        freq[num] = freq[num]+1
+    }
+    fmt.Println(freq)
+    for key , value := range freq{ 
+        if value == n {
+            return key
+        }
+    } 
+    return 0 
+}
+
+2325. Decode the Message - go 
+import 
+(
+    "strings"
+)
+
+func decodeMessage(key string, message string) string {
+    key = strings.ReplaceAll(key, " ", "")
+    unique := ""
+    for i := 0; i < len(key); i++{
+        if !strings.Contains(unique, string(key[i])){
+            unique = unique + string(key[i])
+        }
+    }
+    key = unique
+    encoder := make(map[string]string)
+    alphabet := "abcdefghijklmnopqrstuvwxyz"
+    for i := 0; i < len(alphabet); i++{
+        encoder[string(key[i])] = string(alphabet[i])
+    }
+    answer := "";
+    for i := 0; i < len(message); i++{
+        if (string(message[i]) == " "){
+            answer += " "
+            continue
+        }
+        answer = answer + encoder[string(message[i])]
+    }
+    return answer
+}
