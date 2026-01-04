@@ -8,18 +8,16 @@ func sumFourDivisors(nums []int) int {
         count := 1
         divisor := nums[i]
         for j := 1; j < (nums[i] / 2) + 1; j++{
-            if count > 5{
+            if count > 4 {
                 break
             }
             div := nums[i] % j 
             if div != 0 {  
                 continue
-            }
-            fmt.Println ("modulo of ", nums[i], " and ", j, " == ", div)
+            } 
             count++
             divisor += j  
-        }
-        fmt.Println ("nums div count ",  divisor)
+        } 
         if count == 4{
             total += divisor 
         }
