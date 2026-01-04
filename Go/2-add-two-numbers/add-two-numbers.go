@@ -59,49 +59,29 @@ func ReverseString(s string) string {
 
 func addLargeNumbers(num1, num2 string) string {
 
-    i := len(num1) - 1
-
-    j := len(num2) - 1
-
+    i := len(num1) - 1 
+    j := len(num2) - 1 
     carry := 0
 
-    var result []byte
+    var result []byte 
 
-
-    for i >= 0 || j >= 0 || carry != 0 {
-
-        n1 := 0
-
-        if i >= 0 {
-
-            n1 = int(num1[i] - '0')
-
+    for i >= 0 || j >= 0 || carry != 0 { 
+        n1 := 0 
+        if i >= 0 { 
+            n1 = int(num1[i] - '0') 
         }
 
-        n2 := 0
-
-        if j >= 0 {
-
-            n2 = int(num2[j] - '0')
-
+        n2 := 0 
+        if j >= 0 { 
+            n2 = int(num2[j] - '0') 
         }
-
-
-        current := n1 + n2 + carry
-
-        carry = current / 10
-
-        current = current % 10
-
-        result = append([]byte{'0' + byte(current)}, result...)
-
+ 
+        current := n1 + n2 + carry 
+        carry = current / 10 
+        current = current % 10 
+        result = append([]byte{'0' + byte(current)}, result...) 
         i--
-
         j--
-
-    }
-
-
-    return string(result)
-
+    } 
+    return string(result) 
 }
