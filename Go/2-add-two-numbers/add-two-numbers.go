@@ -13,10 +13,8 @@
  )
 
 func addTwoNumbers(l1 *ListNode, l2 *ListNode) *ListNode {
-    l1str := ReverseString(LinkedListToString(l1))  
-    fmt.Println(l1str)
-    l2str := ReverseString(LinkedListToString(l2))  
-    fmt.Println(l2str)
+    l1str := ReverseString(LinkedListToString(l1))   
+    l2str := ReverseString(LinkedListToString(l2))   
      
     largetotal := addLargeNumbers(l1str, l2str)
     root := CreateLinkedList(largetotal)
